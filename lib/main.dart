@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'MyStore',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: SplashScreen.id,
       routes: {
-        SplashScreen.id: (context) => SplashScreen(),
+        SplashScreen.id: (context) => Product_List(),
         LoginScreen.id: (context) => LoginScreen(),
         SignupScreen.id: (context) => SignupScreen(),
         Product_List.id: (context) => Product_List(),
