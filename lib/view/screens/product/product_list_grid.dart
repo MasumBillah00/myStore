@@ -1,149 +1,101 @@
 import 'package:flutter/material.dart';
-import 'package:mystore/view/screens/product/product_details.dart';
+import 'package:http/http.dart' as http;
+import 'package:mystore/view/screens/product/product_list_card.dart';
+import 'dart:convert';
+import 'package:mystore/view/screens/product/productdetailpage.dart';
 
 class Product_List_Grid extends StatefulWidget {
   const Product_List_Grid({Key? key}) : super(key: key);
 
   @override
-  _Product_List_Grid createState() => _Product_List_Grid();
+  _Product_List_GridState createState() => _Product_List_GridState();
 }
 
-class _Product_List_Grid extends State<Product_List_Grid> {
-  bool isVisible = true;
+class _Product_List_GridState extends State<Product_List_Grid> {
+  List<Map<String, dynamic>> products = []; // Updated to store uploaded products
 
-  final List<Map<String, String>> products = [
-    {
-      'image': 'assets/images/product1.jpg', // Add your image paths
-      'name': 'Product 1',
-      'price': '\$10.00',
-  'weight': '10',
-  'description': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry'
-    },
-    {
-      'image': 'assets/images/product2.jpg', // Add your image paths
-      'name': 'Product 2',
-      'price': '\$20.00',
-      'weight': '10',
-      'description': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry' },
-    {
-      'image': 'assets/images/product3.jpg', // Add your image paths
-      'name': 'Product 3',
-      'price': '\$30.00',
-    'weight': '10',
-    'description': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry'
-    },
-    {
-      'image': 'assets/images/product1.jpg', // Add your image paths
-      'name': 'Product 1',
-      'price': '\$10.00',
-    'weight': '10',
-    'description': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry',
-    },
-    {
-      'image': 'assets/images/product4.jpg', // Add your image paths
-      'name': 'Product 4',
-      'price': '\$40.00',
-    'weight': '10',
-    'description': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry',
-    },
-    {
-      'image': 'assets/images/product5.jpg', // Add your image paths
-      'name': 'Product 5',
-      'price': '\$50.00',
-    'weight': '10',
-    'description': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry',
-    },
-    {
-      'image': 'assets/images/product2.jpg', // Add your image paths
-      'name': 'Product 6',
-      'price': '\$60.00',
-    'weight': '10',
-    'description': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry',
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    fetchProducts(); // Fetch products when the widget initializes
+  }
+
+  void fetchProducts() async {
+    const url = 'https://fakestoreapi.com/products';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> responseData = json.decode(response.body);
+        setState(() {
+          products = responseData.cast<Map<String, dynamic>>(); // Update the products list
+        });
+      } else {
+        throw Exception('Failed to load products');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 10.0,
           crossAxisSpacing: 10.0,
-          childAspectRatio: 2 / 2,
+          childAspectRatio: 2.5 / 3,
         ),
-        itemCount: products.length,
+        itemCount: products.length, // Update to use the fetched products
         itemBuilder: (context, index) {
           final product = products[index];
-          return GestureDetector(
-            onTap: () {
-              {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProductDetailsScreen(
-                      image: product['image']!,
-                      name: product['name']!,
-                      price: product['price']!,
-                      weight: product['weight']!,
-                        description: product['description']!,
-
-                    ),
-                  ),
-                );
-              };
-            },
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductDetailPage(product: product),
+                      ),
+                    );
+                  },
+                  child: product_list_card(product: product),
+                ),
               ),
-              elevation: 4,
-              color: Colors.black.withOpacity(0.1),
-              child: Column(
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(8.0),
-                        topRight: Radius.circular(8.0),
-                      ),
-                      child: Image.asset(
-                        product['image']!,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                      ),
+                  Text(
+                    product['title'],
+                    maxLines: 1,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          product['name']!,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          product['price']!,
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
+                  Text(
+                    '\$${product['price'].toString()}',
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
                     ),
-
+                  ),
 
                 ],
               ),
 
-            ),
+            ],
           );
-
         },
       ),
-
-
     );
   }
 }
+
+

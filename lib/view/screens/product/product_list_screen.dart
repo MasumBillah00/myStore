@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:mystore/view/screens/product/product_list_grid.dart';
-
 import 'card_screen.dart';
+import 'product_upload.dart';
 
 class Product_List extends StatefulWidget {
   static const String id = 'Product_List';
+  final String roleName;
+
+  const Product_List({Key? key, required this.roleName}) : super(key: key);
 
   @override
   State<Product_List> createState() => _Product_ListState();
 }
 
 class _Product_ListState extends State<Product_List> {
-
   int _selectedIndex = 0;
-  void _onItemTapped(int index){
+
+  void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
@@ -21,92 +24,95 @@ class _Product_ListState extends State<Product_List> {
 
   @override
   Widget build(BuildContext context) {
+    bool isAdmin = widget.roleName == 'Admin';
+
     return Scaffold(
-      backgroundColor: Color(0xFFFFFFFF),
+      backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('MyStore',style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 30,
-                ),),
-                Text('Let\'s shopping',style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-
-                ),),
+                Text(
+                  'MyStore',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 30,
+                  ),
+                ),
+                Text(
+                  'Let\'s shopping',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
+                ),
               ],
             ),
-            Container(
+            SizedBox(
               width: 100,
               child: IconButton(
-                icon: Icon(Icons.search,size: 40,
+                icon: const Icon(
+                  Icons.search,
+                  size: 40,
                 ),
                 onPressed: () {
                   // Handle search action here
                 },
               ),
             ),
-
           ],
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Use Expanded or SizedBox to give a defined height to the Stack
             SizedBox(
-              height: 150, // Adjust the height as needed
+              height: 150,
               child: Stack(
                 children: [
-                  // Background Image
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8.0),
-                      image: DecorationImage(
+                      image: const DecorationImage(
                         image: AssetImage('assets/images/card.jpg'),
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                  // Card Content
-                  Card_Screen(),
+                  const Card_Screen(),
                 ],
               ),
             ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Product_List_Grid(),
-
+            const SizedBox(height: 10.0),
+            const Product_List_Grid(),
           ],
         ),
       ),
+    // floatingActionButton: isAdmin ? FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProductInputPage()),
+            );
+          },
+          child: const Icon(Icons.add)), //: null,
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-          label: 'Home'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Cart',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favorite',
-          ),
+              icon: Icon(Icons.shopping_cart), label: 'Cart'),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorite'),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xFF510C35),
+        selectedItemColor: const Color(0xFF510C35),
         onTap: _onItemTapped,
       ),
     );
   }
 }
-

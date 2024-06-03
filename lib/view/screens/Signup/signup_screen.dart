@@ -1,22 +1,82 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+import 'package:http/http.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mystore/view/components/button_screen.dart'; // Ensure the correct import path
-import 'package:mystore/view/screens/signup/signup_screen.dart'; // Ensure the correct import path
-
-import '../../components/constants.dart'; // Ensure the correct import path
+import 'package:mystore/view/components/button_screen.dart';
+import '../../components/constants.dart';
+import '../product/product_list_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   static const String id = 'SignUp_screen';
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignupScreenState createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<SignupScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   bool showSpinner = false;
-  String email = '';
-  String password = '';
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  void signup(String name, String email, String password) async {
+    if (name.isEmpty || email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Name, email, and password cannot be empty.')),
+      );
+      return;
+    }
+
+    setState(() {
+      showSpinner = true;
+    });
+
+    try {
+      print('Sending request with:');
+      print('Name: $name');
+      print('Email: $email');
+      print('Password: $password');
+
+      Response response = await post(
+        Uri.parse('https://fa26-118-67-218-70.ngrok-free.app/api/user'),
+        headers: {
+          'Content-Type':'application/json',
+        },
+        body: jsonEncode({
+          'name': name,
+          'email': email,
+          'password': password,
+        }),
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 201) {
+        var data = jsonDecode(response.body);
+        print(data['token']);
+        print('Registration Successful');
+
+        // Navigate to the Product List screen on successful registration
+        Navigator.pushNamed(context, Product_List.id);
+      } else {
+        print('Registration failed');
+        // Show a notification if registration fails
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Registration failed. Please check your details and try again.')),
+        );
+      }
+    } catch (e) {
+      print(e.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An error occurred. Please try again.')),
+      );
+    } finally {
+      setState(() {
+        showSpinner = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,98 +88,67 @@ class _LoginScreenState extends State<SignupScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-
-            Text('Create Account',style: TextStyle(
-              fontSize: 40,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF210C39)
-            ),),
-
+            Text(
+              'Create Account',
+              style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF210C39),
+              ),
+            ),
             SizedBox(height: 28.0),
-
             TextField(
+              controller: nameController,
+              keyboardType: TextInputType.text,
+              textAlign: TextAlign.start,
+              decoration: kTextFieldDecoration.copyWith(
+                hintText: 'Enter your name',
+                prefixIcon: Icon(Icons.person),
+              ),
+            ),
+            SizedBox(height: 12.0),
+            TextField(
+              controller: emailController,
               keyboardType: TextInputType.emailAddress,
               textAlign: TextAlign.start,
-              onChanged: (value) {
-                email = value;
-              },
-              decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your name',
-              prefixIcon: Icon(Icons.person)),
+              decoration: kTextFieldDecoration.copyWith(
+                hintText: 'Enter your email',
+                prefixIcon: Icon(Icons.email),
+              ),
             ),
             SizedBox(height: 12.0),
             TextField(
-              keyboardType: TextInputType.emailAddress,
-              textAlign: TextAlign.start,
-              onChanged: (value) {
-                email = value;
-              },
-              decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your email',
-              prefixIcon: Icon(Icons.email)),
-            ),
-            SizedBox(height: 12.0),
-            TextField(
+              controller: passwordController,
               obscureText: true,
               textAlign: TextAlign.start,
-              onChanged: (value) {
-                password = value;
-              },
-              decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your password',
-              prefixIcon: Icon(Icons.lock),),
-              
+              decoration: kTextFieldDecoration.copyWith(
+                hintText: 'Enter your password',
+                prefixIcon: Icon(Icons.lock),
+              ),
             ),
-            SizedBox(height: 12.0),
-            TextField(
-              obscureText: true,
-              textAlign: TextAlign.start,
-              onChanged: (value) {
-                password = value;
-              },
-              decoration: kTextFieldDecoration.copyWith(hintText: 'Confirm your password',
-                prefixIcon: Icon(Icons.lock),),
-            ),
+            SizedBox(height: 12,),
+            // TextField(
+            //   controller: passwordController,
+            //   obscureText: true,
+            //   textAlign: TextAlign.start,
+            //   decoration: kTextFieldDecoration.copyWith(
+            //     hintText: 'Confirm your password',
+            //     prefixIcon: Icon(Icons.lock),
+            //   ),
+            // ),
             SizedBox(height: 15.0),
-
             RoundedButton(
               title: 'Sign Up',
               colour: Color(0xFF210C35),
               onPressed: () {
-                // Implement login functionality here
+                signup(
+                  nameController.text.trim(),
+                  emailController.text.trim(),
+                  passwordController.text.trim(),
+                );
               },
             ),
-
             SizedBox(height: 10.0),
-            // TextButton(
-            //   onPressed: () {
-            //     // Implement Google sign up functionality here
-            //   },
-            //   style: TextButton.styleFrom(
-            //     backgroundColor: Colors.transparent,
-            //     padding: EdgeInsets.all(15.0),
-            //     shape: RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.circular(30.0),
-            //       side: BorderSide(color: Color(0xFF210C35)),
-            //     ),
-            //   ),
-            //   child: Row(
-            //     mainAxisSize: MainAxisSize.min,
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       Icon(
-            //         FontAwesomeIcons.google,
-            //         color: Color(0xFF210C35),
-            //       ),
-            //       SizedBox(width: 8.0),
-            //       Text(
-            //         'Sign up with Google',
-            //         style: TextStyle(
-            //           fontSize: 16.0,
-            //           fontWeight: FontWeight.w500,
-            //           color: Color(0xFF210C35),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
           ],
         ),
       ),

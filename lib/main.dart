@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mystore/view/screens/product/product_list_screen.dart';
+import 'package:mystore/view/screens/product/product_upload.dart';
 import 'package:mystore/view/screens/splash/splash_screen.dart';
 import 'package:mystore/view/screens/login/login_screen.dart';
 import 'package:mystore/view/screens/signup/signup_screen.dart';
@@ -20,12 +21,14 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: SplashScreen.id,
+      initialRoute: Product_List.id,
       routes: {
-        SplashScreen.id: (context) => Product_List(),
+        Product_List.id: (context) => Product_List(roleName: '',),
+        SplashScreen.id: (context) => ProductInputPage(),
         LoginScreen.id: (context) => LoginScreen(),
         SignupScreen.id: (context) => SignupScreen(),
-        Product_List.id: (context) => Product_List(),
+        // Product_List.id: (context) => Product_List(roleName: '',),
+
       },
     );
   }
