@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mystore/view/screens/product/product_list_screen.dart';
-import 'package:mystore/view/screens/product/product_upload.dart';
+import 'package:mystore/view/screens/product/productdetailpage.dart';
 import 'package:mystore/view/screens/splash/splash_screen.dart';
 import 'package:mystore/view/screens/login/login_screen.dart';
 import 'package:mystore/view/screens/signup/signup_screen.dart';
@@ -23,12 +23,10 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: Product_List.id,
       routes: {
-        Product_List.id: (context) => Product_List(roleName: '',),
-        SplashScreen.id: (context) => ProductInputPage(),
+        SplashScreen.id: (context) => SplashScreen(),
         LoginScreen.id: (context) => LoginScreen(),
         SignupScreen.id: (context) => SignupScreen(),
-        // Product_List.id: (context) => Product_List(roleName: '',),
-
+        Product_List.id: (context) => const Product_List(roleName: '',),
       },
     );
   }

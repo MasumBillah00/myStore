@@ -18,14 +18,15 @@ class Card_Screen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               'Product Title',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
-              'Description of the product goes here. This card spans the full width of the screen.',
+              'Description of the product goes here..',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),
             ),
           ],

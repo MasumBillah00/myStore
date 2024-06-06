@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:mystore/view/components/button_screen.dart';
+import 'package:mystore/view/screens/login/login_screen.dart';
 import '../../components/constants.dart';
 import '../product/product_list_screen.dart';
 
@@ -22,7 +23,7 @@ class _SignupScreenState extends State<SignupScreen> {
   void signup(String name, String email, String password) async {
     if (name.isEmpty || email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Name, email, and password cannot be empty.')),
+        const SnackBar(content: Text('Name, email, and password cannot be empty.')),
       );
       return;
     }
@@ -38,7 +39,7 @@ class _SignupScreenState extends State<SignupScreen> {
       print('Password: $password');
 
       Response response = await post(
-        Uri.parse('https://fa26-118-67-218-70.ngrok-free.app/api/user'),
+        Uri.parse('https://d8cf-118-67-218-70.ngrok-free.app/api/user'),
         headers: {
           'Content-Type':'application/json',
         },
@@ -63,13 +64,13 @@ class _SignupScreenState extends State<SignupScreen> {
         print('Registration failed');
         // Show a notification if registration fails
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Registration failed. Please check your details and try again.')),
+          const SnackBar(content: Text('Registration failed. Please check your details and try again.')),
         );
       }
     } catch (e) {
       print(e.toString());
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An error occurred. Please try again.')),
+        const SnackBar(content: Text('An error occurred. Please try again.')),
       );
     } finally {
       setState(() {
@@ -80,76 +81,109 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 25.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Text(
-              'Create Account',
-              style: TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF210C39),
-              ),
+    return SafeArea(
+      child: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/signup4.jpg'),
+              fit: BoxFit.cover,
+      
+            )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 25.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Center(
+                  child: const Text(
+                    'Create Account',
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.lightBlueAccent,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 28.0,),
+                TextField(
+                  controller: nameController,
+                  keyboardType: TextInputType.text,
+                  textAlign: TextAlign.start,
+                  decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Enter your name',
+                    prefixIcon: const Icon(Icons.person),
+                  ),
+                ),
+                const SizedBox(height: 12.0),
+                TextField(
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  textAlign: TextAlign.start,
+                  decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Enter your email',
+                    prefixIcon: const Icon(Icons.email),
+                  ),
+                ),
+                const SizedBox(height: 12.0,),
+                TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  textAlign: TextAlign.start,
+                  decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Enter your password',
+                    prefixIcon:const Icon(Icons.lock),
+                  ),
+                ),
+                const SizedBox(height: 12,),
+                // TextField(
+                //   controller: passwordController,
+                //   obscureText: true,
+                //   textAlign: TextAlign.start,
+                //   decoration: kTextFieldDecoration.copyWith(
+                //     hintText: 'Confirm your password',
+                //     prefixIcon: Icon(Icons.lock),
+                //   ),
+                // ),
+                const SizedBox(height: 15.0,),
+                RoundedButton(
+                  title: 'Sign Up',
+                  colour:  Colors.blue,
+                  onPressed: () {
+                    signup(
+                      nameController.text.trim(),
+                      emailController.text.trim(),
+                      passwordController.text.trim(),
+                    );
+                  },
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text('Already have Account?',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+      
+                      ),),
+                    TextButton(onPressed: (){
+                      Navigator.pushNamed(context, LoginScreen.id);
+      
+                    },child: Text('Login',
+                      style: TextStyle(
+                      color: Colors.blueAccent,
+                      fontSize: 18,
+      
+                    ),))
+                  ],
+                ),
+                //const SizedBox(height: 10.0,),
+              ],
             ),
-            SizedBox(height: 28.0),
-            TextField(
-              controller: nameController,
-              keyboardType: TextInputType.text,
-              textAlign: TextAlign.start,
-              decoration: kTextFieldDecoration.copyWith(
-                hintText: 'Enter your name',
-                prefixIcon: Icon(Icons.person),
-              ),
-            ),
-            SizedBox(height: 12.0),
-            TextField(
-              controller: emailController,
-              keyboardType: TextInputType.emailAddress,
-              textAlign: TextAlign.start,
-              decoration: kTextFieldDecoration.copyWith(
-                hintText: 'Enter your email',
-                prefixIcon: Icon(Icons.email),
-              ),
-            ),
-            SizedBox(height: 12.0),
-            TextField(
-              controller: passwordController,
-              obscureText: true,
-              textAlign: TextAlign.start,
-              decoration: kTextFieldDecoration.copyWith(
-                hintText: 'Enter your password',
-                prefixIcon: Icon(Icons.lock),
-              ),
-            ),
-            SizedBox(height: 12,),
-            // TextField(
-            //   controller: passwordController,
-            //   obscureText: true,
-            //   textAlign: TextAlign.start,
-            //   decoration: kTextFieldDecoration.copyWith(
-            //     hintText: 'Confirm your password',
-            //     prefixIcon: Icon(Icons.lock),
-            //   ),
-            // ),
-            SizedBox(height: 15.0),
-            RoundedButton(
-              title: 'Sign Up',
-              colour: Color(0xFF210C35),
-              onPressed: () {
-                signup(
-                  nameController.text.trim(),
-                  emailController.text.trim(),
-                  passwordController.text.trim(),
-                );
-              },
-            ),
-            SizedBox(height: 10.0),
-          ],
+          ),
         ),
       ),
     );

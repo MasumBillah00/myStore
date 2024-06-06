@@ -4,12 +4,14 @@ import 'dart:convert';
 import 'package:mystore/view/components/button_Screen.dart';
 import 'package:mystore/view/screens/product/productdetailpage.dart';
 
-class ProductInputPage extends StatefulWidget {
+import '../../components/constants.dart';
+
+class ProductUploadScreen extends StatefulWidget {
   @override
-  _ProductInputPageState createState() => _ProductInputPageState();
+  _ProductUploadScreenState createState() => _ProductUploadScreenState();
 }
 
-class _ProductInputPageState extends State<ProductInputPage> {
+class _ProductUploadScreenState extends State<ProductUploadScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -60,16 +62,16 @@ class _ProductInputPageState extends State<ProductInputPage> {
             ),
           );
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Product uploaded successfully')),
+            const SnackBar(content: Text('Product uploaded successfully')),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to upload product')),
+            const SnackBar(content: Text('Failed to upload product')),
           );
         }
       } catch (error) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('An error occurred')),
+          const SnackBar(content: Text('An error occurred')),
         );
       }
     }
@@ -79,7 +81,13 @@ class _ProductInputPageState extends State<ProductInputPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Product'),
+        title:  Text('Add Product',
+          style: TextStyle(
+          fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: Colors.blue.shade900,
+            fontFamily: 'SourceSansPro',
+        ),),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -87,14 +95,18 @@ class _ProductInputPageState extends State<ProductInputPage> {
           key: _formKey,
           child: ListView(
             children: <Widget>[
-              Text('Product Details',style:TextStyle(
-                color: Colors.black,
+               Text('Product Details',style:TextStyle(
+                color: Colors.blue.shade900,
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
+                 fontFamily: 'SourceSansPro',
               ),),
               TextFormField(
                 controller: _titleController,
-                decoration: InputDecoration(labelText: 'Title'),
+                decoration:  InputDecoration(
+                  labelText: 'Title',
+                    labelStyle: LTextStyle()
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a title';
@@ -104,7 +116,10 @@ class _ProductInputPageState extends State<ProductInputPage> {
               ),
               TextFormField(
                 controller: _descriptionController,
-                decoration: InputDecoration(labelText: 'Description'),
+                decoration: InputDecoration(
+                    labelText: 'Description',
+                labelStyle: LTextStyle(),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a description';
@@ -114,7 +129,9 @@ class _ProductInputPageState extends State<ProductInputPage> {
               ),
               TextFormField(
                 controller: _skuController,
-                decoration: InputDecoration(labelText: 'SKU'),
+                decoration:  InputDecoration(
+                    labelText: 'SKU',
+                labelStyle: LTextStyle(),),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter an SKU';
@@ -124,7 +141,10 @@ class _ProductInputPageState extends State<ProductInputPage> {
               ),
               TextFormField(
                 controller: _priceController,
-                decoration: InputDecoration(labelText: 'Price'),
+                decoration:  InputDecoration(
+                  labelText: 'Price',
+                  labelStyle: LTextStyle(),
+                ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -138,7 +158,10 @@ class _ProductInputPageState extends State<ProductInputPage> {
               ),
               TextFormField(
                 controller: _weightController,
-                decoration: InputDecoration(labelText: 'Weight'),
+                decoration:  InputDecoration(
+                    labelText: 'Weight',
+                labelStyle: LTextStyle(),
+                ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -154,14 +177,15 @@ class _ProductInputPageState extends State<ProductInputPage> {
                 controller: _imageUrlController,
                 decoration: InputDecoration(
                   labelText: 'Image URL',
+                  labelStyle: LTextStyle(),
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.add),
+                    icon: const Icon(Icons.add,size: 25,),
                     onPressed: _addImageUrl,
                   ),
                 ),
                 keyboardType: TextInputType.url,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20,),
               _imageUrls.isNotEmpty
                   ? Column(
                 children: _imageUrls.map((url) {
@@ -176,7 +200,7 @@ class _ProductInputPageState extends State<ProductInputPage> {
                       Positioned(
                         right: 0,
                         child: IconButton(
-                          icon: Icon(Icons.remove_circle, color: Colors.red),
+                          icon: const Icon(Icons.remove_circle, color: Colors.red),
                           onPressed: () {
                             setState(() {
                               _imageUrls.remove(url);
@@ -188,11 +212,11 @@ class _ProductInputPageState extends State<ProductInputPage> {
                   );
                 }).toList(),
               )
-                  : Text('No image URLs added'),
-              SizedBox(height: 20),
+                  : const Text('No image URLs added'),
+              const SizedBox(height: 20,),
               RoundedButton(
                 title: 'Submit',
-                colour: Colors.blue,
+                colour: Colors.blue.shade800,
                 onPressed: _submitForm,
               ),
             ],

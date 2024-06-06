@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-class ksontainerbox extends StatelessWidget {
-  const ksontainerbox({
+
+class KContainerBox extends StatelessWidget {
+  const KContainerBox({
     super.key,
     required this.product,
   });
@@ -13,48 +14,87 @@ class ksontainerbox extends StatelessWidget {
       children: [
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 3.0),
+            child: Card(
+              color: Colors.black.withOpacity(0.3),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
               ),
+              elevation: 7.0,
+              shadowColor: Colors.grey.withOpacity(.4),
+              clipBehavior: Clip.antiAlias,
+
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text('Category:', style: TextStyle(
-                      fontWeight: FontWeight.bold,),),
-                    SizedBox(height: 5),
-                    Text(product['category'] ?? ''),
+                    Text(
+                      'Category:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        color: Colors.black,
+                        fontFamily: 'SourceSansPro',
+                      ),
+                    ),
+                    const SizedBox(height: 1),
+                    Text(
+                      product['category'] ?? '',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                          fontFamily: 'SourceSansPro',
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
           ),
         ),
-        SizedBox(width: 10,),
+        const SizedBox(
+          width: 1,
+        ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 3.0),
+            child: Card(
+              color: Colors.black.withOpacity(0.3),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
               ),
+              elevation: 7.0,
+              shadowColor: Colors.grey.withOpacity(.4),
+              clipBehavior: Clip.antiAlias,
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    const Text(
+                      'Rating:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        color: Colors.black,
+                        fontFamily: 'SourceSansPro',
+                      ),
+                    ),
+                    const SizedBox(height: 1),
                     if (product['rating'] != null && product['rating'] is Map<String, dynamic>)
                       Text(
-                        'Rating: ${product['rating']['rate'] ?? 0} (${product['rating']['count'] ?? 0} reviews)',
-                        style:TextStyle(fontWeight: FontWeight.bold) ,
+                        '${product['rating']['rate'] ?? 0} (${product['rating']['count'] ?? 0} votes)',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                          fontFamily: 'SourceSansPro',
+                        ),
                       )
                     else
-                      Text('Rating: No ratings available'),
+                      const Text('No ratings available'),
                   ],
                 ),
               ),
