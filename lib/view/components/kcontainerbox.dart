@@ -12,92 +12,94 @@ class KContainerBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 3.0),
-            child: Card(
-              color: Colors.black.withOpacity(0.3),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              elevation: 7.0,
-              shadowColor: Colors.grey.withOpacity(.4),
-              clipBehavior: Clip.antiAlias,
+        Card(
+          color: Color(0xFF041A3A).withOpacity(0.82),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          elevation: 5.0,
+          shadowColor: Colors.black,
+          clipBehavior: Clip.antiAlias,
 
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Category:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                        color: Colors.black,
-                        fontFamily: 'SourceSansPro',
-                      ),
-                    ),
-                    const SizedBox(height: 1),
-                    Text(
-                      product['category'] ?? '',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                          fontFamily: 'SourceSansPro',
-                      ),
-                    ),
-                  ],
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Text(
+                //
+                //   style: TextStyle(
+                //     fontWeight: FontWeight.w600,
+                //     fontSize: 18,
+                //     color: Colors.white,
+                //     fontFamily: 'SourceSansPro',
+                //   ),
+                // ),
+                //const SizedBox(height: 1),
+                Text(
+                  product['category'] ?? '',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                      fontFamily: 'SourceSansPro',
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ),
         const SizedBox(
           width: 1,
         ),
-        Expanded(
+        Card(
+          color: Color(0xFF041A3A).withOpacity(0.82),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          elevation: 7.0,
+          shadowColor: Colors.grey.withOpacity(.4),
+          clipBehavior: Clip.antiAlias,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 3.0),
-            child: Card(
-              color: Colors.black.withOpacity(0.3),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              elevation: 7.0,
-              shadowColor: Colors.grey.withOpacity(.4),
-              clipBehavior: Clip.antiAlias,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Rating:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                        color: Colors.black,
-                        fontFamily: 'SourceSansPro',
-                      ),
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // const Text(
+                //   '',
+                //   style: TextStyle(
+                //     fontWeight: FontWeight.w600,
+                //     fontSize: 18,
+                //     color: Colors.white,
+                //     fontFamily: 'SourceSansPro',
+                //   ),
+                // ),
+                //const SizedBox(height: 1),
+                // if (product['rating'] != null && product['rating'] is Map<String, dynamic>)
+                //   Text(
+                //     '${product['rating']['rate'] ?? 0} (${product['rating']['count'] ?? 0} )',
+                //     style: TextStyle(
+                //       fontSize: 18,
+                //       fontWeight: FontWeight.bold,
+                //       color: Colors.white,
+                //       fontFamily: 'SourceSansPro',
+                //     ),
+                //   )
+                // else
+                //   const Text('No ratings available'),
+                if (product['rating'] != null && product['rating'] is Map<String, dynamic>)
+                  Text(
+                    '${product['rating']['rate'] ?? 0}  ★',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontFamily: 'SourceSansPro',
                     ),
-                    const SizedBox(height: 1),
-                    if (product['rating'] != null && product['rating'] is Map<String, dynamic>)
-                      Text(
-                        '${product['rating']['rate'] ?? 0} (${product['rating']['count'] ?? 0} votes)',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                          fontFamily: 'SourceSansPro',
-                        ),
-                      )
-                    else
-                      const Text('No ratings available'),
-                  ],
-                ),
-              ),
+                  )
+                else
+                  const Text('No ratings available'),
+              ],
             ),
           ),
         ),

@@ -70,3 +70,38 @@ class FAddButton extends StatelessWidget {
   }
 }
 
+
+
+
+class ElevatedButtonScreen extends StatelessWidget {
+  const ElevatedButtonScreen({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: EdgeInsets.symmetric(vertical: 12),
+      ),
+      onPressed: () {
+        // Add your onPressed functionality here
+      },
+      child: Text(
+        'Buy Now',
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+}
+
+

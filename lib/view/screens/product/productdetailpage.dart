@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mystore/view/components/button_Screen.dart';
-import 'package:mystore/view/screens/product/product_list_screen.dart';
 import '../../components/kcontainerbox.dart';
 import '../../components/product_detail_size.dart';
+import '../../components/productdetailbottombuttons.dart';
 
 class ProductDetailPage extends StatefulWidget {
   static const String id = 'ProductDetailPage';
@@ -41,6 +41,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               left: 10,
               right: 10,
               bottom: 5,
+              top: 10,
+
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,7 +60,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           ),
                           Positioned(
                             top: 8,
-                            left: 8,
+                            left: 2,
                             child: Card(
                               color: Colors.black.withOpacity(0.3),
                               shape: RoundedRectangleBorder(
@@ -82,20 +84,20 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           ),
                           Positioned(
                             top: 8,
-                            right: 8,
+                            right: 2,
                             child: Card(
                               color: Colors.black.withOpacity(0.3),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
-                              elevation: 5.0, // Adds elevation to the card
+                              elevation: 2.0, // Adds elevation to the card
                               margin: const EdgeInsets.all(8.0), // Sets margin around the card
                               shadowColor: Colors.grey.withOpacity(0.5), // Sets the shadow color
                               clipBehavior: Clip.antiAlias, // Clips the content with anti-aliasing
                               child: IconButton(
                                 icon: Icon(
                                   isFavorite ? Icons.favorite : Icons.favorite_border,
-                                  color: isFavorite ? Colors.red : Colors.black,
+                                  color: isFavorite ? Color(0xFF041A3A).withOpacity(.82) : Colors.black,
                                   size: 30,
                                 ),
                                 onPressed: _toggleFavorite,
@@ -120,7 +122,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         return widget.product['title'] ?? '';
                       })(),
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                       overflow: TextOverflow.ellipsis,
@@ -128,7 +130,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ),
                     Text(
                       ' \$${widget.product['price']?.toStringAsFixed(2) ?? ''}',
-                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                      style:  TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFFFF0000)
+                      ),
                     ),
                   ],
                 ),
@@ -152,7 +158,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 Text(
                   (() {
                     var description = widget.product['description'] ?? '';
-                    const int maxDescriptionLength = 150; // Maximum characters to display
+                    const int maxDescriptionLength = 200; // Maximum characters to display
                     if (description.length > maxDescriptionLength) {
                       return description.substring(0, maxDescriptionLength) + '...';
                     }
@@ -173,61 +179,47 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      color: Colors.white.withOpacity(.2),
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(12),
-                        onTap: () {
-                          // Add your onTap functionality here
-                          print("Card tapped!");
-                        },
-                        child: Container(
-                          height: 50,
-                          width: 70,
-                          alignment: Alignment.center,
-                          child: Icon(
-                            Icons.shopping_cart,
-                            color: Colors.black,
-                            size: 35,
-                          ),
-                        ),
+                    ProductDetailsBottomButton(
+                      onTap: (){
+
+                      },
+                      icon: Icon(
+                        Icons.shopping_cart,
+                        color: Colors.black,
+                        size: 35,
                       ),
                     ),
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      color: Colors.white.withOpacity(.2),
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(12),
-                        onTap: () {
-                          // Add your onTap functionality here
-                          print("Card tapped!");
+                    ProductDetailsBottomButton(
+                        onTap: (){
                         },
-                        child: Container(
-                          height: 50,
-                          width: 70,
-                          alignment: Alignment.center,
-                          child: Icon(
-                            Icons.chat_outlined,
-                            color: Colors.black,
-                            size: 35,
-                          ),
+                        icon: Icon(
+                          Icons.chat_outlined,
+                          color: Colors.black,
+                          size: 35,
                         ),
-                      ),
                     ),
                     const SizedBox(
                       width: 10,
                     ),
 
                     Expanded(
-                      child: RoundedButton(
-                        title: 'Buy Now',
-                        colour: Colors.black.withOpacity(.7),
-                        onPressed: () {},
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          gradient: LinearGradient(
+                            colors: [Colors.grey[800]!, Colors.black],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black54,
+                              offset: Offset(4, 4),
+                              blurRadius: 10,
+                            ),
+                          ],
+                        ),
+                        child: ElevatedButtonScreen(),
                       ),
                     ),
                   ],
@@ -240,3 +232,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     );
   }
 }
+
+
+

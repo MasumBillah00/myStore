@@ -46,8 +46,10 @@ class _SizeCardState extends State<SizeCard> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
+        elevation: 5,
+        shadowColor: Colors.black,
         color: isSelected[index]
-            ? Colors.black.withOpacity(.7) // Deep color when selected
+            ? Color(0xFF041A3A).withOpacity(.82) // Deep color when selected
             : Colors.black.withOpacity(.3), // Normal color when not selected
         child: Container(
           height: 40,

@@ -41,61 +41,64 @@ class _Product_List_GridState extends State<Product_List_Grid> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 10.0,
-          crossAxisSpacing: 10.0,
-          childAspectRatio: 2.5 / 3,
-        ),
-        itemCount: products.length, // Update to use the fetched products
-        itemBuilder: (context, index) {
-          final product = products[index];
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProductDetailPage(product: product),
-                      ),
-                    );
-                  },
-                  child: product_list_card(product: product),
-                ),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+    return SingleChildScrollView(
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        child: Expanded(
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 10.0,
+              crossAxisSpacing: 10.0,
+              childAspectRatio: 2.5 / 3,
+            ),
+            itemCount: products.length, // Update to use the fetched products
+            itemBuilder: (context, index) {
+              final product = products[index];
+              return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    product['title'],
-                    maxLines: 1,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
+                  Flexible(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductDetailPage(product: product),
+                          ),
+                        );
+                      },
+                      child: product_list_card(product: product),
                     ),
                   ),
-                  Text(
-                    '\$${product['price'].toString()}',
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product['title'],
+                        maxLines: 1,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '\$${product['price'].toString()}',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+
+                    ],
                   ),
 
                 ],
-              ),
-
-            ],
-          );
-        },
+              );
+            },
+          ),
+        ),
       ),
     );
   }
 }
-
-

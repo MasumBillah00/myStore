@@ -56,7 +56,6 @@ class _Product_ListState extends State<Product_List> {
                     fontSize: 30,
                     fontFamily: 'SourceSansPro',
                     fontWeight: FontWeight.bold,
-
                   ),
                 ),
                 Text(
@@ -66,11 +65,6 @@ class _Product_ListState extends State<Product_List> {
                     color: Color(0xFF041A3A),
                     fontFamily: 'SourceSansPro',
                     fontWeight: FontWeight.bold,
-
-
-
-
-
                   ),
                 ),
                 SizedBox(
@@ -115,7 +109,11 @@ class _Product_ListState extends State<Product_List> {
               ),
             ),
             const SizedBox(height: 10.0),
-            const Product_List_Grid(),
+            const SingleChildScrollView(child: Column(
+              children: [
+                Product_List_Grid(),
+              ],
+            ),),
           ],
         ),
       ),
