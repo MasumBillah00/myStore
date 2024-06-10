@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mystore/view/screens/product/product_list_card.dart';
@@ -41,62 +42,178 @@ class _Product_List_GridState extends State<Product_List_Grid> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        child: Expanded(
-          child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 10.0,
-              crossAxisSpacing: 10.0,
-              childAspectRatio: 2.5 / 3,
-            ),
-            itemCount: products.length, // Update to use the fetched products
-            itemBuilder: (context, index) {
-              final product = products[index];
-              return Column(
+    return Expanded(
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 10.0,
+          crossAxisSpacing: 10.0,
+          childAspectRatio: 2.5 / 3,
+        ),
+        itemCount: products.length, // Update to use the fetched products
+        itemBuilder: (context, index) {
+          final product = products[index];
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Flexible(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductDetailPage(product: product),
+                      ),
+                    );
+                  },
+                  child: product_list_card(product: product),
+                ),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Flexible(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProductDetailPage(product: product),
-                          ),
-                        );
-                      },
-                      child: product_list_card(product: product),
+                  Text(
+                    product['title'],
+                    maxLines: 1,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        product['title'],
-                        maxLines: 1,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        '\$${product['price'].toString()}',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-
-                    ],
+                  Text(
+                    '\$${product['price'].toString()}',
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
 
                 ],
-              );
-            },
-          ),
+              ),
+
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+*/
+
+
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:mystore/view/screens/product/productdetailpage.dart';
+
+class Product_List_Grid extends StatefulWidget {
+  const Product_List_Grid({Key? key}) : super(key: key);
+
+  @override
+  _Product_List_GridState createState() => _Product_List_GridState();
+}
+
+class _Product_List_GridState extends State<Product_List_Grid> {
+  List<Map<String, dynamic>> products = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchProducts();
+  }
+
+  void fetchProducts() async {
+    const url = 'https://fakestoreapi.com/products';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> responseData = json.decode(response.body);
+        setState(() {
+          products = responseData.cast<Map<String, dynamic>>();
+        });
+      } else {
+        throw Exception('Failed to load products');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            // SizedBox(
+            //   height: 10,
+            // ),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: ScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 10.0,
+                crossAxisSpacing: 10.0,
+                childAspectRatio: 2 / 3,
+              ),
+
+              itemCount: products.length, // Update to use the fetched products
+              itemBuilder: (context, index) {
+                final product = products[index];
+
+                return SingleChildScrollView(
+                  child: Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProductDetailPage(product: product),
+                              ),
+                            );
+                          },
+                          child: Image.network(
+                            product['image'],
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          ),
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              product['title'],
+                              maxLines: 1,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '\$${product['price'].toString()}',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

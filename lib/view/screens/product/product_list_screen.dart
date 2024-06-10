@@ -89,77 +89,109 @@ class _Product_ListState extends State<Product_List> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 150,
-              child: Stack(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      image: const DecorationImage(
-                        image: AssetImage('assets/images/card.jpg'),
-                        fit: BoxFit.cover,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+
+
+
+              SizedBox(
+                height: 150,
+                child: Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        image: const DecorationImage(
+                          image: AssetImage('assets/images/card.jpg'),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                  const Card_Screen(),
-                ],
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      elevation: 4,
+                      color: Colors.black.withOpacity(0.1), // Semi-transparent overlay
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Product Title',
+                              style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Description of the product goes here..',
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 10.0),
-            const SingleChildScrollView(child: Column(
-              children: [
-                Product_List_Grid(),
-              ],
-            ),),
-          ],
+              const SizedBox(height: 10.0),
+
+
+          
+              Container(
+
+
+          
+                height: MediaQuery.of(context).size.height,
+                  child: const Product_List_Grid(),
+          
+              ),
+
+
+          
+          
+          
+            ],
+          ),
         ),
       ),
 
-
-    //floatingActionButton: isAdmin ? FAddButton(): null,
-      floatingActionButton:  const FAddButton(),
-
+      //floatingActionButton: isAdmin ? FAddButton(): null,
+      floatingActionButton: const FAddButton(),
 
       bottomNavigationBar: BottomNavigationBar(
-        items:  <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Cart',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.logout),
-            label: 'Log Out',
-
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: const Color(0xFF510C35), // Color for selected item
-        unselectedItemColor: const Color(0xFFCCCCCC), // Lighter color for unselected items
-        onTap:  (int index) {
-          if (index == 3) {
-
-
-            // If the logout icon is tapped (index 3), navigate to the login page
-            _showLogoutConfirmationDialog(context);
-          } else {
-            // Handle other bottom navigation bar item taps
-            _onItemTapped(index);
-
-          }
-        }),
-
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart),
+              label: 'Cart',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.logout),
+              label: 'Log Out',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: const Color(0xFF510C35), // Color for selected item
+          unselectedItemColor: const Color(0xFFCCCCCC), // Lighter color for unselected items
+          onTap: (int index) {
+            if (index == 3) {
+              // If the logout icon is tapped (index 3), navigate to the login page
+              _showLogoutConfirmationDialog(context);
+            } else {
+              // Handle other bottom navigation bar item taps
+              _onItemTapped(index);
+            }
+          }),
     );
   }
 }
-
